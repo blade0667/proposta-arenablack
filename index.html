@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Proposta ArenaBlack</title>
+<meta name="description" content="Proposta comercial: app Android, web app para iPhone, painel da academia e site novo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500..900&family=Chakra+Petch:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #040405;
+    --surface: #0a0b0d;
+    --card: #121317;
+    --line: #23242a;
+    --red: #ff2e3b;
+    --red-deep: #8e0018;
+    --text: #e9e9ea;
+    --text-2: #c4c7cc;
+    --muted: #868b94;
+    --cut: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Chakra Petch', Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+  h1, h2, .num, .val { font-family: 'Orbitron', Arial, sans-serif; }
+  h2 { font-size: clamp(28px, 5vw, 46px); font-weight: 700; line-height: 1.12; margin-top: 10px; }
+  h3 { font-size: 22px; font-weight: 700; line-height: 1.2; }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .3em; color: var(--red); text-transform: uppercase; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--red); }
+
+  /* Barra superior */
+  .top {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(4,4,5,.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-family: 'Orbitron', Arial, sans-serif; font-weight: 800; letter-spacing: .08em; font-size: 16px; }
+  .top a.cta { font-size: 14px; }
+
+  .cta {
+    display: inline-block; background: var(--red); color: var(--bg);
+    font-weight: 700; text-decoration: none; letter-spacing: .06em;
+    padding: 12px 22px;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    transition: filter .2s;
+  }
+  .cta:hover { filter: brightness(1.12); }
+
+  /* Capa */
+  .hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #24040a 0%, #0a0708 55%, var(--bg) 100%);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--red); }
+  .hero .wrap { padding-top: 88px; padding-bottom: 88px; }
+  .hero h1 { font-size: clamp(64px, 15vw, 150px); font-weight: 900; line-height: .95; margin: 22px 0 28px; letter-spacing: .02em; }
+  .hero .lead { font-size: clamp(20px, 3vw, 26px); max-width: 640px; color: var(--text); }
+  .hero .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  .chip { border: 1px solid #3a1418; background: rgba(255,46,59,.08); color: var(--text); padding: 8px 14px; font-size: 15px; font-weight: 600; }
+
+  section.block { padding: 80px 0; border-bottom: 1px solid var(--line); }
+  section.block.alt { background: var(--surface); }
+  .head { margin-bottom: 40px; max-width: 760px; }
+  .head p.sub { margin-top: 14px; color: var(--text-2); font-size: 19px; }
+
+  /* Grades */
+  .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .grid.g2, .grid.g3, .grid.g4 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .grid.g3 { grid-template-columns: repeat(3, 1fr); } .grid.g4 { grid-template-columns: repeat(4, 1fr); } }
+
+  .card {
+    background: var(--card);
+    border-left: 4px solid var(--red);
+    padding: 28px 26px;
+    display: flex; flex-direction: column; gap: 10px;
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
+  }
+  .card p { color: var(--text-2); }
+  .num { font-size: 36px; font-weight: 800; line-height: 1; color: var(--red); }
+
+  .points { display: grid; gap: 28px; grid-template-columns: 1fr; }
+  @media (min-width: 820px) { .points { grid-template-columns: repeat(3, 1fr); } }
+  .point { border-top: 3px solid var(--red); padding-top: 22px; }
+  .point .num { margin-bottom: 14px; }
+  .point p { font-size: 20px; color: var(--text); }
+
+  /* Lista do painel */
+  .rows { border-bottom: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 20px 0; border-top: 1px solid var(--line); }
+  @media (min-width: 720px) { .row { grid-template-columns: 320px 1fr; gap: 32px; align-items: center; } }
+  .row p { color: var(--text-2); }
+
+  /* Preço */
+  .price-card {
+    background: var(--card);
+    border-left: 4px solid var(--red);
+    padding: 36px 30px;
+    clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+  }
+  .price-card .label { font-size: 14px; font-weight: 600; letter-spacing: .3em; color: var(--muted); }
+  .price { display: flex; align-items: flex-end; gap: 10px; margin: 14px 0 16px; flex-wrap: wrap; }
+  .price .cur { font-family: 'Orbitron', Arial, sans-serif; font-size: 26px; font-weight: 700; color: var(--red); line-height: 1.5; }
+  .price .val { font-size: clamp(56px, 12vw, 92px); font-weight: 900; line-height: 1; }
+  .price .per { font-size: 22px; font-weight: 600; color: var(--muted); line-height: 1.6; }
+  .price-card p.note { color: var(--text-2); }
+
+  ul.list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  ul.list li { position: relative; padding-left: 26px; color: var(--text-2); }
+  ul.list li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 10px; background: var(--red); transform: rotate(45deg); }
+  ul.list.off li::before { background: transparent; border: 2px solid var(--muted); }
+
+  /* Tabela de condições */
+  .terms { width: 100%; border-collapse: collapse; }
+  .terms th, .terms td { text-align: left; padding: 16px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .terms th { font-size: 14px; letter-spacing: .2em; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+  .terms td:first-child { font-weight: 700; width: 36%; }
+  .terms td:last-child { color: var(--text-2); }
+  @media (max-width: 560px) {
+    .terms thead { display: none; }
+    .terms tr { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .terms td { display: block; border: 0; padding: 2px 0; width: auto !important; }
+  }
+
+  /* Fechamento */
+  .closing { background: var(--red); color: var(--bg); padding: 88px 0; }
+  .closing .eyebrow { color: var(--bg); }
+  .closing h2 { font-size: clamp(44px, 9vw, 96px); font-weight: 900; margin: 16px 0 24px; }
+  .closing p { font-size: 20px; font-weight: 600; }
+
+  footer { padding: 28px 0; color: var(--muted); font-size: 14px; letter-spacing: .1em; }
+
+  /* Entrada suave */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="brand">ARENA <span class="accent">BLACK</span></span>
+    <a class="cta" href="#investimento">Ver investimento</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Proposta comercial</p>
+    <h1>ARENA<br><span class="accent">BLACK</span></h1>
+    <p class="lead">App Android, web app para iPhone, painel da academia e site novo, em um só pacote.</p>
+    <div class="chips">
+      <span class="chip">App Android (APK)</span>
+      <span class="chip">Web app para iPhone</span>
+      <span class="chip">Painel da academia</span>
+      <span class="chip">Site novo</span>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">Por que um app próprio</p>
+      <h2>O treino continua quando o aluno sai da academia.</h2>
+    </div>
+    <div class="points">
+      <div class="point reveal"><p class="num">01</p><p>A ficha do professor fica no celular e funciona mesmo sem internet.</p></div>
+      <div class="point reveal"><p class="num">02</p><p>Dieta e água registradas no dia a dia, no mesmo lugar do treino.</p></div>
+      <div class="point reveal"><p class="num">03</p><p>Sorteios e avisos que dão ao aluno um motivo para voltar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">O que a academia recebe</p>
+      <h2>Quatro peças, um só sistema.</h2>
+      <p class="sub">Tudo ligado ao mesmo servidor: o que o professor muda no painel aparece no celular do aluno.</p>
+    </div>
+    <div class="grid g4">
+      <div class="card reveal"><p class="num">01</p><h3>App Android</h3><p>Instalado pelo arquivo APK, com ícone e marca ArenaBlack. Lembretes no celular, como o fim do descanso.</p></div>
+      <div class="card reveal"><p class="num">02</p><h3>Web app para iPhone</h3><p>Aberto pelo Safari e adicionado à tela inicial. Abre em tela cheia com ícone próprio, sem App Store.</p></div>
+      <div class="card reveal"><p class="num">03</p><h3>Painel da academia</h3><p>Pelo navegador, para recepção, professores e administração.</p></div>
+      <div class="card reveal"><p class="num">04</p><h3>Site renovado</h3><p>Visual novo, alinhado ao app, feito para o celular.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">App do aluno</p>
+      <h2>Tudo o que o aluno precisa.</h2>
+      <p class="sub">As mesmas funções no app Android e no web app do iPhone.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card reveal"><h3>Hoje</h3><p>Resumo do dia: treino, refeições e água.</p></div>
+      <div class="card reveal"><h3>Treino</h3><p>Ficha do professor e player com descanso cronometrado. Funciona offline.</p></div>
+      <div class="card reveal"><h3>Dieta</h3><p>Cardápio prescrito e diário de refeições e água.</p></div>
+      <div class="card reveal"><h3>Calendário</h3><p>Feriados, eventos e horários especiais da academia.</p></div>
+      <div class="card reveal"><h3>Sorteios</h3><p>O aluno acompanha os sorteios e vê o resultado.</p></div>
+      <div class="card reveal"><h3>Avisos</h3><p>Caixa de mensagens da academia, com contador de novidades.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">Painel da academia</p>
+      <h2>A equipe comanda tudo pelo navegador.</h2>
+      <p class="sub">Cada professor vê só os próprios alunos; a administração vê tudo.</p>
+    </div>
+    <div class="rows reveal">
+      <div class="row"><h3>Alunos e professores</h3><p>Cadastro, importação por planilha e situação da matrícula.</p></div>
+      <div class="row"><h3>Treinos e dietas</h3><p>Prescrição pelo professor, para um ou vários alunos de uma vez.</p></div>
+      <div class="row"><h3>Calendário e avisos</h3><p>Eventos, feriados e comunicados para todos os alunos.</p></div>
+      <div class="row"><h3>Sorteios</h3><p>Critérios, sorteio auditável e registro da entrega do brinde.</p></div>
+      <div class="row"><h3>Visão geral</h3><p>Números da academia e registro de quem alterou o quê.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">Redesign do site</p>
+      <h2>Um site com a cara da ArenaBlack.</h2>
+    </div>
+    <div class="grid g2">
+      <div class="card reveal"><h3>Visual novo</h3><p>A mesma identidade do app: preto, vermelho e a tipografia da marca.</p></div>
+      <div class="card reveal"><h3>Feito para o celular</h3><p>Abre rápido e bem no celular, onde o aluno e o futuro aluno estão.</p></div>
+      <div class="card reveal"><h3>Página “Instale o app”</h3><p>Passo a passo para instalar o app Android e o web app do iPhone, para a recepção enviar aos alunos.</p></div>
+      <div class="card reveal"><h3>Escopo combinado</h3><p>Até [__] páginas e [__] rodadas de ajustes inclusas na implantação.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="investimento">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">Investimento</p>
+      <h2>Um valor de entrada e uma mensalidade.</h2>
+    </div>
+    <div class="grid g2">
+      <div class="price-card reveal">
+        <p class="label">IMPLANTAÇÃO</p>
+        <div class="price"><span class="cur">R$</span><span class="val">2.500</span></div>
+        <p class="note">Pagamento único. App Android, web app para iPhone, painel da academia e redesign do site.</p>
+      </div>
+      <div class="price-card reveal">
+        <p class="label">MANUTENÇÃO</p>
+        <div class="price"><span class="cur">R$</span><span class="val">150</span><span class="per">/mês</span></div>
+        <p class="note">Até 200 alunos ativos. Servidores, atualizações e suporte.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">O que a manutenção cobre</p>
+      <h2>Sem surpresas na mensalidade.</h2>
+    </div>
+    <div class="grid g2">
+      <div class="card reveal">
+        <h3>Incluso nos R$ 150/mês</h3>
+        <ul class="list">
+          <li>Servidores e hospedagem do app, do painel e do site</li>
+          <li>Correções e atualizações do app Android e do web app do iPhone</li>
+          <li>Novas versões do APK para Android</li>
+          <li>Suporte em horário comercial, com resposta em até [__] horas úteis</li>
+          <li>Pequenos ajustes no site, até [__] por mês</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3>Orçado à parte</h3>
+        <ul class="list off">
+          <li>Notificações push no celular</li>
+          <li>Publicação na Play Store</li>
+          <li>Funcionalidades novas, como treino da semana e gráficos de evolução</li>
+          <li>Páginas novas no site</li>
+          <li>Domínio próprio, em nome da academia (cerca de R$ 40/ano)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">Implantação</p>
+      <h2>Do contrato ao lançamento.</h2>
+      <p class="sub">Prazo total estimado: [__] semanas após a assinatura.</p>
+    </div>
+    <div class="grid g4">
+      <div class="card reveal"><p class="num">01</p><h3>Marca e configuração</h3><p>App, painel e ícone com a identidade ArenaBlack.</p></div>
+      <div class="card reveal"><p class="num">02</p><h3>Alunos e professores</h3><p>Importação da planilha e envio dos acessos.</p></div>
+      <div class="card reveal"><p class="num">03</p><h3>Site novo</h3><p>Layout, conteúdo, ajustes e publicação.</p></div>
+      <div class="card reveal"><p class="num">04</p><h3>Lançamento</h3><p>Treinamento da equipe e divulgação aos alunos.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">Condições</p>
+      <h2>Como funciona o contrato.</h2>
+    </div>
+    <table class="terms reveal">
+      <thead><tr><th>Item</th><th>Condição</th></tr></thead>
+      <tbody>
+        <tr><td>Implantação</td><td>R$ 2.500, [50% na assinatura e 50% no lançamento]</td></tr>
+        <tr><td>Manutenção</td><td>R$ 150/mês, a partir do lançamento</td></tr>
+        <tr><td>Alunos ativos</td><td>Até 200; acima disso, [R$ __] por aluno por mês</td></tr>
+        <tr><td>Prazo do contrato</td><td>[12] meses, com renovação automática</td></tr>
+        <tr><td>Reajuste</td><td>Anual, pelo IPCA</td></tr>
+        <tr><td>Validade da proposta</td><td>[30] dias</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <p class="eyebrow">Próximo passo</p>
+    <h2>Vamos começar?</h2>
+    <p>[Seu nome] · [WhatsApp] · [e-mail]</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">ARENA BLACK · PROPOSTA COMERCIAL</div>
+</footer>
+
+<script>
+  (function () {
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
